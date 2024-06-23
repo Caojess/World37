@@ -5,25 +5,34 @@ import { SafeAreaView, View, Text, StyleSheet, FlatList, Dimensions, ScrollView 
 const { width } = Dimensions.get('window');
 
 // Dummy data for the horizontal lists
-const DATA = Array.from({ length: 6 }, (_, i) => ({ id: i.toString() }));
+const RECENT_DATA = Array.from({ length: 6 }, (_, i) => ({ id: i.toString(), text: i === 0 ? 'TEST' : '' }));
+const OTHER_DATA = Array.from({ length: 6 }, (_, i) => ({ id: i.toString() }));
+
+// Define the type for the props of the Item component
+type ItemProps = {
+  text?: string;
+};
 
 // Component for each item in the horizontal lists
-const Item = () => (
-  <View style={styles.item} />
+const Item: React.FC<ItemProps> = ({ text }) => (
+  <View style={styles.item}>
+    {text ? <Text style={styles.itemText}>{text}</Text> : null}
+  </View>
 );
 
 // Define the type for the props of the HorizontalList component
 type HorizontalListProps = {
   title: string;
+  data: Array<{ id: string; text?: string }>;
 };
 
 // Horizontal list component
-const HorizontalList: React.FC<HorizontalListProps> = ({ title }) => (
+const HorizontalList: React.FC<HorizontalListProps> = ({ title, data }) => (
   <View style={styles.horizontalListContainer}>
     <Text style={styles.listTitle}>{title}</Text>
     <FlatList
-      data={DATA}
-      renderItem={Item}
+      data={data}
+      renderItem={({ item }) => <Item text={item.text} />}
       keyExtractor={item => item.id}
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -41,11 +50,11 @@ const HomeScreen = () => {
         <View style={styles.topSection} />
 
         {/* Horizontal lists */}
-        <HorizontalList title="YOUR RECENTS" />
-        <HorizontalList title="TRENDING" />
-        <HorizontalList title="TOP PICKS FOR YOU" />
-        <HorizontalList title="ALL TIME BESTS" />
-        <HorizontalList title="NEW RELEASES" />
+        <HorizontalList title="YOUR RECENTS" data={RECENT_DATA} />
+        <HorizontalList title="TRENDING" data={OTHER_DATA} />
+        <HorizontalList title="TOP PICKS FOR YOU" data={OTHER_DATA} />
+        <HorizontalList title="ALL TIME BESTS" data={OTHER_DATA} />
+        <HorizontalList title="NEW RELEASES" data={OTHER_DATA} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -83,6 +92,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'darkgray',
     marginHorizontal: 10,
     borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // Style for the item text
+  itemText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
