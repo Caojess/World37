@@ -1,17 +1,35 @@
 import * as React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions } from 'react-native';
+import { SafeAreaView, View, StyleSheet, FlatList, Dimensions, ScrollView } from 'react-native';
 
 // Get the width of the screen
 const { width } = Dimensions.get('window');
+
+// Dummy data for the blocks
+const DATA = Array.from({ length: 9 }, (_, i) => ({ id: i.toString() })); // Reduced to 9 items for 3 rows
+
+// Component for each block
+const LibraryBlock = () => (
+  <View style={styles.block} />
+);
 
 // This is the LibraryScreen component
 const LibraryScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top section with gray background */}
-      <View style={styles.topSection}></View>
-      {/* Text component to display the "Library" text */}
-      <Text style={styles.text}>Library</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {/* Top section with gray background */}
+        <View style={styles.topSection} />
+
+        <FlatList
+          data={DATA}
+          renderItem={LibraryBlock}
+          keyExtractor={item => item.id}
+          numColumns={3}
+          columnWrapperStyle={styles.row}
+          scrollEnabled={false} // Disable scrolling in FlatList since ScrollView handles it
+          contentContainerStyle={styles.listContent}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -20,21 +38,33 @@ const LibraryScreen = () => {
 const styles = StyleSheet.create({
   // Style for the container (SafeAreaView)
   container: {
-    flex: 1, // Flex 1 means the component will take up the full screen
-    alignItems: 'center', // Centers the children (Text) horizontally
-    backgroundColor: '#ADD8E6', // Background color of the screen (light blue)
+    flex: 1,
+    backgroundColor: '#000', // Background color of the screen (black)
   },
-  // Style for the top section
+  scrollViewContent: {
+    alignItems: 'center',
+  },
   topSection: {
-    height: 250, // Fixed height of 350 px
+    height: 250, // Fixed height of 250 px
     width: width, // Full width of the screen
     backgroundColor: 'gray', // Background color of the top section
+    marginBottom: 10,
   },
-  // Style for the text
-  text: {
-    fontSize: 24, // Font size of the text
-    color: '#000080', // Text color (navy blue)
-    marginTop: 20, // Margin top to add some space below the top section
+  // Style for each block
+  block: {
+    width: 98,
+    height: 128,
+    backgroundColor: 'gray',
+    margin: 15, // Adjust margin for spacing (38px total between blocks)
+    borderRadius: 10,
+  },
+  // Style for the row
+  row: {
+    justifyContent: 'center', // Center the rows horizontally
+  },
+  // Style for the list content
+  listContent: {
+    alignItems: 'center',
   },
 });
 

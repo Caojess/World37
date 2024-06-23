@@ -5,7 +5,7 @@ import { SafeAreaView, View, Text, StyleSheet, FlatList, Dimensions, ScrollView 
 const { width } = Dimensions.get('window');
 
 // Dummy data for the horizontal lists
-const DATA = Array.from({ length: 10 }, (_, i) => ({ id: i.toString() }));
+const DATA = Array.from({ length: 6 }, (_, i) => ({ id: i.toString() }));
 
 // Component for each item in the horizontal lists
 const Item = () => (
@@ -43,7 +43,7 @@ const HomeScreen = () => {
         {/* Horizontal lists */}
         <HorizontalList title="YOUR RECENTS" />
         <HorizontalList title="TRENDING" />
-        <HorizontalList title="OUR PICKS FOR YOU" />
+        <HorizontalList title="TOP PICKS FOR YOU" />
         <HorizontalList title="ALL TIME BESTS" />
         <HorizontalList title="NEW RELEASES" />
       </ScrollView>
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     height: 150,
     backgroundColor: 'darkgray',
     marginHorizontal: 10,
+    borderRadius: 10,
   },
 });
 
